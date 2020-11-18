@@ -1,3 +1,6 @@
+import jsonlines
+import random
+
 class Ranker(object):
 
     def __init__(self):
@@ -25,11 +28,14 @@ class Recommender(object):
         self.idx = None
 
     def index(self):
-        pass
+        self.idx = []
+        with jsonlines.open('./data/gesis-search/datasets/dataset.jsonl') as reader:
+            for obj in reader:
+                self.idx.append(obj['id'])
 
     def recommend_datasets(self, item_id, page, rpp):
 
-        itemlist = []
+        itemlist = random.choices(self.idx, k=rpp)
 
         return {
             'page': page,
@@ -41,7 +47,7 @@ class Recommender(object):
 
     def recommend_publications(self, item_id, page, rpp):
 
-        itemlist = []
+        itemlist = random.choices(self.idx, k=rpp)
 
         return {
             'page': page,
